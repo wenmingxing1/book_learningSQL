@@ -23,12 +23,12 @@ show tables;
 
 desc person;
 
-create table favorite_food
-(
-  person_id smallint unsigned,
-  food varchar(20),
-  constraint pk_favorite_food primary key (person_id, food),
-  constraint fk_fav_food_person_id foreign key (person_id) references person (person_id)
+CREATE TABLE favorite_food (
+    person_id SMALLINT UNSIGNED,
+    food VARCHAR(20),
+    CONSTRAINT pk_favorite_food PRIMARY KEY (person_id , food),
+    CONSTRAINT fk_fav_food_person_id FOREIGN KEY (person_id)
+        REFERENCES person (person_id)
 );
 
 desc favorite_food;
@@ -65,23 +65,29 @@ insert into person
 (person_id, fname, lname, gender, birth_date, street, city, state, country, postal_code)
 values (null, 'Susan', 'Simth', 'F', '1975-11-2', '23 Maple st', 'Arlington', 'VA', 'USA', '20220');
 
-update person
-set street = '1225 Tremont St.',
-city = 'Boston',
-state = 'MA',
-country = 'USA',
-postal_code = '02138'
-where person_id = 1;
+UPDATE person 
+SET 
+    street = '1225 Tremont St.',
+    city = 'Boston',
+    state = 'MA',
+    country = 'USA',
+    postal_code = '02138'
+WHERE
+    person_id = 1;
 
-update person 
-set street = '23 Maple st.'
-where person_id = 2;
+UPDATE person 
+SET 
+    street = '23 Maple st.'
+WHERE
+    person_id = 2;
 
 ##insert into favorite_food (person_id, food) values (999, 'banana');
 
-update person
-set birth_date = '1980-12-21'
-where person_id = 1;
+UPDATE person 
+SET 
+    birth_date = '1980-12-21'
+WHERE
+    person_id = 1;
 
 select * from person where person_id = 1;
 
