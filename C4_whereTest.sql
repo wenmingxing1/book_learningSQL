@@ -3,51 +3,149 @@ show databases;
 use test;
 show tables;
 
-select pt.name product_type, p.name product from product p inner join product_type pt on p.product_type_cd = pt.product_type_cd
-where pt.name = 'Customer Accounts';
+SELECT 
+    pt.name product_type, p.name product
+FROM
+    product p
+        INNER JOIN
+    product_type pt ON p.product_type_cd = pt.product_type_cd
+WHERE
+    pt.name = 'Customer Accounts';
 
-select pt.name product_type, p.name product from product p inner join product_type pt on p.product_type_cd = pt.product_type_cd
-where pt.name <> 'Customer Accounts';	# <> !=
+SELECT 
+    pt.name product_type, p.name product
+FROM
+    product p
+        INNER JOIN
+    product_type pt ON p.product_type_cd = pt.product_type_cd
+WHERE
+    pt.name <> 'Customer Accounts';	# <> !=
 
 select * from account;
 
-delete from account where status = 'CLOSED' and year(close_date) = 2002;
+DELETE FROM account 
+WHERE
+    status = 'CLOSED'
+    AND YEAR(close_date) = 2002;
 
-select emp_id, fname, lname, start_date from employee where start_date between '2005-01-01' and '2007-01-01';	# between
+SELECT 
+    emp_id, fname, lname, start_date
+FROM
+    employee
+WHERE
+    start_date BETWEEN '2005-01-01' AND '2007-01-01';	# between
 
-select account_id, product_cd, cust_id, avail_balance from account where product_cd in ('CHK', 'SAV', 'CD', 'MM');	# in
+SELECT 
+    account_id, product_cd, cust_id, avail_balance
+FROM
+    account
+WHERE
+    product_cd IN ('CHK' , 'SAV', 'CD', 'MM');	# in
 
 # 使用子查询
-select account_id, product_cd, cust_id, avail_balance from account where product_cd in
-(select product_cd from product where product_type_cd = 'ACCOUNT');
+SELECT 
+    account_id, product_cd, cust_id, avail_balance
+FROM
+    account
+WHERE
+    product_cd IN (SELECT 
+            product_cd
+        FROM
+            product
+        WHERE
+            product_type_cd = 'ACCOUNT');
 
-select account_id, product_cd, cust_id, avail_balance from account where product_cd not in ('CHK', 'SAV', 'CD', 'MM');
+SELECT 
+    account_id, product_cd, cust_id, avail_balance
+FROM
+    account
+WHERE
+    product_cd NOT IN ('CHK' , 'SAV', 'CD', 'MM');
 
-select emp_id, fname, lname from employee where left(lname, 1) = 'T';	#开头为T
+SELECT 
+    emp_id, fname, lname
+FROM
+    employee
+WHERE
+    LEFT(lname, 1) = 'T';	#开头为T
 
 # 通配符
-select lname from employee where lname like '_a%e%';
+SELECT 
+    lname
+FROM
+    employee
+WHERE
+    lname LIKE '_a%e%';
 
-select cust_id, fed_id from customer where fed_id like '___-__-____';
+SELECT 
+    cust_id, fed_id
+FROM
+    customer
+WHERE
+    fed_id LIKE '___-__-____';
 
 # 正则表达式
-select emp_id, fname, lname from employee where lname like 'F%' or lname like 'G%';
-select emp_id, fname, lname from employee where lname regexp '^[FG]';
+SELECT 
+    emp_id, fname, lname
+FROM
+    employee
+WHERE
+    lname LIKE 'F%' OR lname LIKE 'G%';
+    
+SELECT 
+    emp_id, fname, lname
+FROM
+    employee
+WHERE
+    lname REGEXP '^[FG]';
 
 # NULL
-select emp_id, fname, lname, superior_emp_id from employee where superior_emp_id is null;
-select emp_id, fname, lname, superior_emp_id from employee where superior_emp_id is not null;
+SELECT 
+    emp_id, fname, lname, superior_emp_id
+FROM
+    employee
+WHERE
+    superior_emp_id IS NULL;
+    
+SELECT 
+    emp_id, fname, lname, superior_emp_id
+FROM
+    employee
+WHERE
+    superior_emp_id IS NOT NULL;
 
-select emp_id, fname, lname, superior_emp_id from employee where superior_emp_id != 6 or superior_emp_id is null;
+SELECT 
+    emp_id, fname, lname, superior_emp_id
+FROM
+    employee
+WHERE
+    superior_emp_id != 6
+        OR superior_emp_id IS NULL;
 
 ############################### test
 
 # test 4-3
-select account_id, open_date from account where year(open_date) = 2002;
-select account_id, open_date from account where open_date between '2002-01-01' and '2002-12-31';
+SELECT 
+    account_id, open_date
+FROM
+    account
+WHERE
+    YEAR(open_date) = 2002;
+    
+SELECT 
+    account_id, open_date
+FROM
+    account
+WHERE
+    open_date BETWEEN '2002-01-01' AND '2002-12-31';
 
 # test 4-4
-select cust_id, lname, fname from individual where lname like '_a%e%';
+SELECT 
+    cust_id, lname, fname
+FROM
+    individual
+WHERE
+    lname LIKE '_a%e%';
 
 
 
