@@ -4,40 +4,88 @@ use test;
 desc product;
 desc customer;
 
-select 1 num, 'abc' str union select 9 num, 'xyz' str;
+SELECT 1 num, 'abc' str 
+UNION SELECT 9 num, 'xyz' str;
 
-select 'IND' type_cd, cust_id, lname name from individual 
-union all 
-select 'BUS' type_cd, cust_id, name from business;
+SELECT 
+    'IND' type_cd, cust_id, lname name
+FROM
+    individual 
+UNION ALL SELECT 
+    'BUS' type_cd, cust_id, name
+FROM
+    business;
 
 select 'IND' type_cd, cust_id, lname name from individual;
 select 'BUS' type_cd, cust_id, name from business;
 
-select 'IND' type_cd, cust_id, lname name from individual
-union all
-select 'BUS' type_cd, cust_id, name from business
-union all
-select 'BUS' type_cd, cust_id, name from business;
+SELECT 
+    'IND' type_cd, cust_id, lname name
+FROM
+    individual 
+UNION ALL SELECT 
+    'BUS' type_cd, cust_id, name
+FROM
+    business 
+UNION ALL SELECT 
+    'BUS' type_cd, cust_id, name
+FROM
+    business;
 
 
-select emp_id from employee where assigned_branch_id = 2 and (title = 'Teller' or title = 'Head Teller')
-union 
-select distinct open_emp_id from account where open_branch_id = 2;
+SELECT 
+    emp_id
+FROM
+    employee
+WHERE
+    assigned_branch_id = 2
+        AND (title = 'Teller'
+        OR title = 'Head Teller') 
+UNION SELECT DISTINCT
+    open_emp_id
+FROM
+    account
+WHERE
+    open_branch_id = 2;
 
 # select emp_id from employee where assigned_branch_id = 2 and (title = 'Teller' or title = 'Head Teller')
 # except/intersect
 # select distinct open_emp_id from account where open_branch_id = 2;
 
-select emp_id, assigned_branch_id from employee where title = 'Teller'
-union
-select open_emp_id, open_branch_id from account where product_cd = 'SAV'
-order by emp_id;
+SELECT 
+    emp_id, assigned_branch_id
+FROM
+    employee
+WHERE
+    title = 'Teller' 
+UNION SELECT 
+    open_emp_id, open_branch_id
+FROM
+    account
+WHERE
+    product_cd = 'SAV'
+ORDER BY emp_id;
 
-select cust_id from account where product_cd in ('SAV', 'MM') 
-union all
-select a.cust_id from account a inner join branch b on a.open_branch_id = b.branch_id where b.name = 'Woburn Branch'
-union
-select cust_id from account where avail_balance between 500 and 2500;
+SELECT 
+    cust_id
+FROM
+    account
+WHERE
+    product_cd IN ('SAV' , 'MM') 
+UNION ALL SELECT 
+    a.cust_id
+FROM
+    account a
+        INNER JOIN
+    branch b ON a.open_branch_id = b.branch_id
+WHERE
+    b.name = 'Woburn Branch' 
+UNION SELECT 
+    cust_id
+FROM
+    account
+WHERE
+    avail_balance BETWEEN 500 AND 2500;
 
 ##################################### test
 
@@ -47,15 +95,25 @@ select * from employee;
 select * from officer;
 select * from individual;
 
-select lname, fname from individual
-union 
-select lname, fname from employee;
+SELECT 
+    lname, fname
+FROM
+    individual 
+UNION SELECT 
+    lname, fname
+FROM
+    employee;
 
 # test 6-3
-select lname, fname from individual
-union 
-select lname, fname from employee
-order by lname;
+SELECT 
+    lname, fname
+FROM
+    individual 
+UNION SELECT 
+    lname, fname
+FROM
+    employee
+ORDER BY lname;
 
 
 
