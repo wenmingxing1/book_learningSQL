@@ -9,12 +9,35 @@ select e.fname, e.lname, d.name from employee e inner join department d using (d
 select e.fname, e.lname, d.name from employee e inner join department d on e.dept_id = d.dept_id;
 select e.fname, e.lname, d.name from employee e, department d where e.dept_id = d.dept_id;
 
-select a.account_id, c.fed_id from account a inner join customer c on a.cust_id = c.cust_id where c.cust_type_cd = 'B';
+SELECT 
+    a.account_id, c.fed_id
+FROM
+    account a
+        INNER JOIN
+    customer c ON a.cust_id = c.cust_id
+WHERE
+    c.cust_type_cd = 'B';
 
-select a.account_id, c.fed_id, e.fname, e.lname from account a inner join customer c on a.cust_id = c.cust_id
-inner join employee e on a.open_emp_id = e.emp_id where c.cust_type_cd = 'B';
+SELECT 
+    a.account_id, c.fed_id, e.fname, e.lname
+FROM
+    account a
+        INNER JOIN
+    customer c ON a.cust_id = c.cust_id
+        INNER JOIN
+    employee e ON a.open_emp_id = e.emp_id
+WHERE
+    c.cust_type_cd = 'B';
 
-select emp_id, assigned_branch_id from employee where start_date < '2007-01-01' and (title = 'Teller' or title = 'Head Teller');
+SELECT 
+    emp_id, assigned_branch_id
+FROM
+    employee
+WHERE
+    start_date < '2007-01-01'
+        AND (title = 'Teller'
+        OR title = 'Head Teller');
+
 select branch_id from branch where name = 'Woburn Branch';
 
 SELECT 
@@ -112,4 +135,12 @@ WHERE
 
 # test 5-3
 select * from employee;
-select e1.emp_id, e1.fname, e1.lname from employee e1 inner join employee e2 on e1.superior_emp_id = e2.emp_id where e1.dept_id != e2.dept_id; 
+
+SELECT 
+    e1.emp_id, e1.fname, e1.lname
+FROM
+    employee e1
+        INNER JOIN
+    employee e2 ON e1.superior_emp_id = e2.emp_id
+WHERE
+    e1.dept_id != e2.dept_id; 
