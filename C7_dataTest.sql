@@ -12,8 +12,9 @@ values ('This is char data', 'This is varchar data', 'This is text data');
 
 set sql_safe_updates = 0;
 
-update string_tbl
-set vchar_fld = 'This is a piece of extremely long varchar data';
+UPDATE string_tbl 
+SET 
+    vchar_fld = 'This is a piece of extremely long varchar data';
 
 select @@session.sql_mode;
 set sql_mode = 'ansi';
@@ -21,7 +22,9 @@ set sql_mode = 'ansi';
 select vchar_fld from string_tbl;
 
 #update string_tbl set text_fld = 'This string doesn't work';
-update string_tbl set txt_fld = 'This string didn''t work, but it does now';
+UPDATE string_tbl 
+SET 
+    txt_fld = 'This string didn\'t work, but it does now';
 
 select txt_fld from string_tbl;
 
@@ -105,13 +108,19 @@ select datediff( current_date(), '1994-2-22');
 ######################################################### test
 
 # test 7-1
-select substring('Please find the substring in this string', 17, 1), substring('Please find the substring in this substring', 25, 1);
+SELECT 
+    SUBSTRING('Please find the substring in this string',
+        17,
+        1),
+    SUBSTRING('Please find the substring in this substring',
+        25,
+        1);
 
 # test 7-2
-select abs(-25.76823), sign(-25.76823), round(abs(-25.76823), 2);
+SELECT ABS(- 25.76823), SIGN(- 25.76823), ROUND(ABS(- 25.76823), 2);
 
 # test 7-3
-select month(current_date());
+SELECT MONTH(CURRENT_DATE());
 
 
 
