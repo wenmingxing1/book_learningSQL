@@ -7,10 +7,27 @@ select open_emp_id, count(*) count from account group by open_emp_id;
 
 select open_emp_id, count(*) count from account group by open_emp_id having count > 6;
 
-select max(avail_balance) max_balance, min(avail_balance) min_balance, avg(avail_balance) avg_balance, sum(avail_balance) sum_bablance,
-count(*) num_accounts from account where product_cd = 'CHK';
+SELECT 
+    MAX(avail_balance) max_balance,
+    MIN(avail_balance) min_balance,
+    AVG(avail_balance) avg_balance,
+    SUM(avail_balance) sum_bablance,
+    COUNT(*) num_accounts
+FROM
+    account
+WHERE
+    product_cd = 'CHK';
 
-select product_cd, max(avail_balance), min(avail_balance), avg(avail_balance), sum(avail_balance), count(*) from account group by product_cd;
+SELECT 
+    product_cd,
+    MAX(avail_balance),
+    MIN(avail_balance),
+    AVG(avail_balance),
+    SUM(avail_balance),
+    COUNT(*)
+FROM
+    account
+GROUP BY product_cd;
 
 select * from account;
 select open_emp_id, count(account_id) from account group by open_emp_id;
@@ -22,23 +39,57 @@ insert into number_tbl values(1);
 insert into number_tbl values(3);
 insert into number_tbl values(5);
 
-select count(*) num_rows, count(val) num_vals, sum(val) sum_val, max(val) max_val, avg(val) avg_val from number_tbl;
+SELECT 
+    COUNT(*) num_rows,
+    COUNT(val) num_vals,
+    SUM(val) sum_val,
+    MAX(val) max_val,
+    AVG(val) avg_val
+FROM
+    number_tbl;
 
 insert into number_tbl values(null);
 
 select * from account;
 select product_cd, sum(avail_balance) prod_balance from account group by product_cd;
 
-select product_cd, open_branch_id, sum(avail_balance) tot_balance from account group by product_cd, open_branch_id;
+SELECT 
+    product_cd, open_branch_id, SUM(avail_balance) tot_balance
+FROM
+    account
+GROUP BY product_cd , open_branch_id;
 
-select year(start_date) year, count(*) count from employee group by year order by year;
+SELECT 
+    YEAR(start_date) year, COUNT(*) count
+FROM
+    employee
+GROUP BY year
+ORDER BY year;
 
-select product_cd, open_branch_id, sum(avail_balance) sum_balance from account group by product_cd, open_branch_id with rollup;
+SELECT 
+    product_cd, open_branch_id, SUM(avail_balance) sum_balance
+FROM
+    account
+GROUP BY product_cd , open_branch_id WITH ROLLUP;
 
-select product_cd, sum(avail_balance) prod_balance from account where status = 'ACTIVE' group by product_cd having sum(avail_balance)>=10000;
+SELECT 
+    product_cd, SUM(avail_balance) prod_balance
+FROM
+    account
+WHERE
+    status = 'ACTIVE'
+GROUP BY product_cd
+HAVING SUM(avail_balance) >= 10000;
 
-select product_cd, sum(avail_balance) prod_balance from account where status = 'ACTIVE' group by product_cd 
-having min(avail_balance) >= 1000 and max(avail_balance) <= 10000;
+SELECT 
+    product_cd, SUM(avail_balance) prod_balance
+FROM
+    account
+WHERE
+    status = 'ACTIVE'
+GROUP BY product_cd
+HAVING MIN(avail_balance) >= 1000
+    AND MAX(avail_balance) <= 10000;
 
 
 ############################################### test
@@ -51,12 +102,26 @@ select count(*) from account;
 select cust_id, count(account_id) from account group by cust_id;
 
 # test 8-3
-select cust_id, count(account_id) from account group by cust_id having count(account_id) >= 2;
+SELECT 
+    cust_id, COUNT(account_id)
+FROM
+    account
+GROUP BY cust_id
+HAVING COUNT(account_id) >= 2;
 
 # test 8-4
 select * from account;
-select product_cd, open_branch_id, count(account_id) count_account, sum(avail_balance) sum_balance from account 
-group by product_cd, open_branch_id having count(account_id) >= 1 order by sum_balance desc;
+
+SELECT 
+    product_cd,
+    open_branch_id,
+    COUNT(account_id) count_account,
+    SUM(avail_balance) sum_balance
+FROM
+    account
+GROUP BY product_cd , open_branch_id
+HAVING COUNT(account_id) >= 1
+ORDER BY sum_balance DESC;
 
 
 
