@@ -1,23 +1,87 @@
 # 第9章 子查询
 use test;
 
-select account_id, product_cd, cust_id, avail_balance from account where account_id = (select max(account_id) from account);
+SELECT 
+    account_id, product_cd, cust_id, avail_balance
+FROM
+    account
+WHERE
+    account_id = (SELECT 
+            MAX(account_id)
+        FROM
+            account);
 
-select account_id, product_cd, cust_id, avail_balance from account where open_emp_id <> 
-(select e.emp_id from employee e inner join branch b on e.assigned_branch_id = b.branch_id where e.title = 'Head Teller' and b.city = 'Woburn');
+SELECT 
+    account_id, product_cd, cust_id, avail_balance
+FROM
+    account
+WHERE
+    open_emp_id <> (SELECT 
+            e.emp_id
+        FROM
+            employee e
+                INNER JOIN
+            branch b ON e.assigned_branch_id = b.branch_id
+        WHERE
+            e.title = 'Head Teller'
+                AND b.city = 'Woburn');
 
-select branch_id, name, city from branch where name in ('Headquarters', 'Quincy Branch');
+SELECT 
+    branch_id, name, city
+FROM
+    branch
+WHERE
+    name IN ('Headquarters' , 'Quincy Branch');
 
-select emp_id, fname, lname, title from employee where emp_id in (select superior_emp_id from employee);
+SELECT 
+    emp_id, fname, lname, title
+FROM
+    employee
+WHERE
+    emp_id IN (SELECT 
+            superior_emp_id
+        FROM
+            employee);
 
-select emp_id, fname, lname, title from employee where emp_id not in (select superior_emp_id from employee where superior_emp_id is not null);
+SELECT 
+    emp_id, fname, lname, title
+FROM
+    employee
+WHERE
+    emp_id NOT IN (SELECT 
+            superior_emp_id
+        FROM
+            employee
+        WHERE
+            superior_emp_id IS NOT NULL);
 
 
 # 使用all会报错？？？
-select emp_id, fname, lname, title from employee where emp_id != all (select superior_emp_id from employee where superior_emp_id is not null);
+SELECT 
+    emp_id, fname, lname, title
+FROM
+    employee
+WHERE
+    emp_id != ALL (SELECT 
+            superior_emp_id
+        FROM
+            employee
+        WHERE
+            superior_emp_id IS NOT NULL);
 
-select account_id, cust_id, product_cd, avail_balance from account 
-where avail_balance < all (select a.avail_balance from account a inner join individual i on a.cust_id = i.cust_id where i.fname = 'Frank' and i.lname = 'Tucker');
+SELECT 
+    account_id, cust_id, product_cd, avail_balance
+FROM
+    account
+WHERE
+    avail_balance < ALL (SELECT 
+            a.avail_balance
+        FROM
+            account a
+                INNER JOIN
+            individual i ON a.cust_id = i.cust_id
+        WHERE
+            i.fname = 'Frank' AND i.lname = 'Tucker');
 
 SELECT 
     account_id, product_cd, cust_id
@@ -36,9 +100,29 @@ WHERE
                 OR e.title = 'Head Teller'));
                 
                 
-select c.cust_id, c.cust_type_cd, c.city from customer c where 2 = (select count(*) from account a where a.cust_id = c.cust_id);
+SELECT 
+    c.cust_id, c.cust_type_cd, c.city
+FROM
+    customer c
+WHERE
+    2 = (SELECT 
+            COUNT(*)
+        FROM
+            account a
+        WHERE
+            a.cust_id = c.cust_id);
 
-select c.cust_id, c.cust_type_cd, c.city from customer c where (select sum(a.avail_balance) from account a where a.cust_id = c.cust_id) between 5000 and 10000;
+SELECT 
+    c.cust_id, c.cust_type_cd, c.city
+FROM
+    customer c
+WHERE
+    (SELECT 
+            SUM(a.avail_balance)
+        FROM
+            account a
+        WHERE
+            a.cust_id = c.cust_id) BETWEEN 5000 AND 10000;
 
 SELECT 
     a.account_id, a.product_cd, a.cust_id, a.avail_balance
@@ -66,11 +150,38 @@ WHERE
             t.account_id = a.account_id
                 AND t.txn_date = '2008-9-22');
                 
-select a.account_id, a.product_cd, a.cust_id from account a where not exists (select 1 from business b where b.cust_id = a.cust_id);
-select a.account_id, a.product_cd, a.cust_id from account a where a.cust_id not in (select cust_id from business);
+SELECT 
+    a.account_id, a.product_cd, a.cust_id
+FROM
+    account a
+WHERE
+    NOT EXISTS( SELECT 
+            1
+        FROM
+            business b
+        WHERE
+            b.cust_id = a.cust_id);
+            
+SELECT 
+    a.account_id, a.product_cd, a.cust_id
+FROM
+    account a
+WHERE
+    a.cust_id NOT IN (SELECT 
+            cust_id
+        FROM
+            business);
 
 set sql_safe_updates = 0;
-update account a set a.last_activity_date = (select max(t.txn_date) from transaction t where t.account_id = a.account_id);
+
+UPDATE account a 
+SET 
+    a.last_activity_date = (SELECT 
+            MAX(t.txn_date)
+        FROM
+            transaction t
+        WHERE
+            t.account_id = a.account_id);
 
 UPDATE account a 
 SET 
@@ -89,7 +200,15 @@ WHERE
             t.account_id = a.account_id);
 
 
-delete from department where not exists (select 1 from employee where employee.dept_id = department.dept_id); #delete中使用关联子查询不能使用表别名
+DELETE FROM department 
+WHERE
+    NOT EXISTS( SELECT 
+        1
+    FROM
+        employee
+    
+    WHERE
+        employee.dept_id = department.dept_id); #delete中使用关联子查询不能使用表别名
 
 ##### 9.5 何时使用子查询 
 
@@ -326,10 +445,24 @@ WHERE
     e.dept_id = d.dept_id
         AND e.assigned_branch_id = b.branch_id;
 
-select e.emp_id, e.fname, e.lname,
-(select name from department where department.dept_id = e.dept_id) dept_name,
-(select name from branch where branch.branch_id = e.assigned_branch_id) branch_name
-from employee e;
+SELECT 
+    e.emp_id,
+    e.fname,
+    e.lname,
+    (SELECT 
+            name
+        FROM
+            department
+        WHERE
+            department.dept_id = e.dept_id) dept_name,
+    (SELECT 
+            name
+        FROM
+            branch
+        WHERE
+            branch.branch_id = e.assigned_branch_id) branch_name
+FROM
+    employee e;
 
 
 
